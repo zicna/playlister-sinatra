@@ -13,5 +13,6 @@ end
 
 use ArtistsController
 use SongsController
+use GenresController
 
 run ApplicationController
