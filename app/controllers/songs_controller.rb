@@ -6,8 +6,15 @@ class SongsController < ApplicationController
         erb :'/songs/index'
     end
 
+
     get "/songs/new" do
+        # binding.pry
+        @songs = Song.all
+        @genres = Genre.all
+        @artists = Artist.all
+        
         erb :"/songs/new"
+        
     end
 
     get "/songs/:slug" do 
@@ -20,14 +27,15 @@ class SongsController < ApplicationController
         erb :"/songs/show"
     end
 
-    get "/songs/new" do
-        erb :"/songs/new"
-    end
+    
 
     post "/songs" do
         #binding.pry
         @song = Song.create(params[:song])
-        @artist = Artist.create(params[:artist])
+        @song.artist = Artist.find_or_create_by(name: params[:artist][:name])
+        @song.genre_ids = params[:genres]
+        @song.save
+
         redirect to "/song/#{@song.slug}"
     end
 end
